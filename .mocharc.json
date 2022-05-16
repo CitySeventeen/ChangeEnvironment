@@ -1,0 +1,20 @@
+{
+    "spec": ["test/manage-user", "test/"],
+    "fgrep": "Auth by JWT",
+    "exit": true,
+    "ui": "bdd",
+    "exclude": [
+      "test/*esplorativo*"
+    ],
+    "watch": false,
+    "watch-files": [
+      "./lib/*.js",
+      "./sendmme.js"
+    ],
+    "diff": true,
+    "colors": true,
+    "reporter": "spec",
+    "inline-diffs": true,
+    "require": "dotenv/config",
+    "dotenv_config_override": true
+  }

@@ -1,0 +1,31 @@
+{
+  "name": "change-env",
+  "version": "0.1.0",
+  "description": "Permette di eseguire una callback, ad esempio una test suite, con una variabile di ambiente diversa, che ha effetto anche sui require di CommonJS. L'ambiente viene ripristinato dopo aver eseguito la callback come se non fosse mai stato modificato.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha"
+  },
+  "bugs": {
+    "url": "https://github.com/CitySeventeen/ChangeEnvironment/issues"
+  },
+  "homepage": "https://github.com/CitySeventeen/ChangeEnvironment#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CitySeventeen/ChangeEnvironment.git"
+  },
+  "main": "./change-env.js",
+  "keywords": [
+    "env",
+    "environment",
+    "change-environment",
+    "testing",
+    "require"
+  ],
+  "author": "Raffaele Balsamo <raffaelebalsamo91@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0"
+  }
+}
