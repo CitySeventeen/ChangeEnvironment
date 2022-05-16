@@ -59,7 +59,7 @@ describe('Test ChangeEnv', () => {
     expect(require_dopo_change_env).to.deep.equal(precedente_require);
     expect(require_dopo_change_env).to.equal(precedente_require);
   });
-  it('require viene ricalcolato quando viene eliminata tutta la cache', () => {
+  it.skip('require viene ricalcolato quando viene eliminata tutta la cache', () => {
     const precedente_require = require('./change-env.support.js').istanziaNuovoOggettoAdOgniRequire;
     const callback = ()=>{
       informaCallbackStataChiamata(callback_chiamata); 
@@ -71,7 +71,7 @@ describe('Test ChangeEnv', () => {
     ChangeEnv('nuovo_ambiente', callback, undefined);
     assicuratiCheCallbackVieneChiamata(callback_chiamata);
   });
-  it('require non viene ricalcolato dopo change-env perché ha ripristinato la cache (che era stata eliminata per intero)', () => {
+  it.skip('require non viene ricalcolato dopo change-env perché ha ripristinato la cache (che era stata eliminata per intero)', () => {
     const precedente_require = require('./change-env.support.js').istanziaNuovoOggettoAdOgniRequire;
     const callback = ()=>{
       informaCallbackStataChiamata(callback_chiamata); 
