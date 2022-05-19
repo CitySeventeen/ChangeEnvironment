@@ -3,7 +3,7 @@ const ambiente = process.env.NODE_ENV;
 
 const {expect, assert} = require('chai');
 
-const ChangeEnv = require(`../change-env.js`)(require);
+const ChangeEnv = require(`../`)(require);
 
 const t = {r_support: './change-env.support.js',
            r_support2: './change-env.support2.js'};

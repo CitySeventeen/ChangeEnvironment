@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/CitySeventeen/ChangeEnvironment.git"
   },
-  "main": "./change-env.js",
+  "main": "./index.js",
   "keywords": [
     "env",
     "environment",
