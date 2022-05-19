@@ -6,7 +6,8 @@ const {expect, assert} = require('chai');
 const ChangeEnv = require(`../`)(require);
 
 const t = {r_support: './change-env.support.js',
-           r_support2: './change-env.support2.js'};
+           r_support2: './change-env.support2.js',
+           some_mod_core: ['util', 'assert', 'fs']};
 Object.freeze(t);
 
 
@@ -65,11 +66,14 @@ describe('Test ChangeEnv', () => {
     expect(require_dopo_change_env).to.deep.equal(precedente_require);
     expect(require_dopo_change_env).to.equal(precedente_require);
   });
-  it.skip('nessun errore nella cancellazione e ripristino di un path_require di un modulo core', () => {
-    
+  it('nessun errore nella cancellazione e ripristino di un path_require di un modulo core', () => {
+    for(let mod of t.some_mod_core){
+      expect(()=>{ChangeEnv(new_env, ()=>{}, mod);}).to.not.throw();
+    }
   });
-  it.skip('errore se inserito un path_require non esistente (cioè che require.resolve non trova)', () => {
-    
+  it('errore se inserito un path_require non esistente (cioè che require.resolve non trova)', () => {
+    const path_modulo_inesistente = './sicuramente_non_esisto.js';
+    expect(()=>{ChangeEnv(new_env, ()=>{}, path_modulo_inesistente)}).to.throw('Cannot find module');
   });
   it.skip('require viene ricalcolato quando viene eliminata tutta la cache', () => {
     const precedente_require = require(t.r_support).istanziaNuovoOggettoAdOgniRequire;
