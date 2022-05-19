@@ -11,38 +11,72 @@
 // implementare path_require anche come array, per permettere di eliminare cache di più require
 // analizzare il possibile utilizzo con moduli ecma
 
-function importaRequireDalModuloChiamante(oggetto_require){
-  return function(...args){
-    return ChangeEnv(oggetto_require, ...args);
-  };
-}
+const assert = require('assert');
 
-function ChangeEnv(require_del_chiamante, new_env, callback, path_require){
-  const env_to_return = process.env.NODE_ENV;
-  let path_resolved;
-  let cache;
-  process.env.NODE_ENV = new_env;
+function ChangeEnv(require_del_chiamante, new_env, callback, path_require=undefined){
+  checkArgs(require_del_chiamante, new_env, callback, path_require);
+  const previous_env = {env: undefined, modules: {}};
+  saveAndModifyEnvironmentVar(previous_env, new_env);
+  saveAndDeleteModuleFromCache(previous_env, path_require, require_del_chiamante);
 
-  if(typeof path_require === 'string'){
-    path_resolved = require_del_chiamante.resolve(path_require);
-    cache = require_del_chiamante.cache[path_resolved];
-    delete require_del_chiamante.cache[path_resolved];
-  }
-  if(path_require === undefined){
-    ////cache = estraiAndRitornaKeysCacheTranneMain(require_del_chiamante); 
-  }
-
-  callback();
+  let returned_value_of_callback = eseguiCallback(callback);
   
-  process.env.NODE_ENV = env_to_return;
-  if(typeof path_require === 'string'){
-    require_del_chiamante.cache[path_resolved] = cache;
+  restoreEnvironmentVar(previous_env);
+  restoreCache(previous_env, require_del_chiamante);
+  
+  return returned_value_of_callback;
+}
+function checkArgs(require_del_chiamante, new_env, callback, path_require){
+  assert(typeof require_del_chiamante === 'function', `primo argomento deve essere un la require function`);
+  assert(typeof new_env === 'string', 'secondo argomento deve essere una stringa');
+  assert(typeof callback === 'function', 'terzo argomento deve essere una funzione');
+  assert(path_require === undefined || typeof path_require === 'string' || Array.isArray(path_require), 'ultimo argomento deve essere stringa o array di stringhe');
+}
+function saveAndModifyEnvironmentVar(previous_env, new_env){
+  const previous_env_var = process.env.NODE_ENV;
+  process.env.NODE_ENV = new_env;
+  previous_env.env = previous_env_var;
+}
+function saveAndDeleteModuleFromCache(previous_env, paths_require, require_del_chiamante){
+  if(!Array.isArray(paths_require)) paths_require = [paths_require];
+  let cache_saved = {};
+  for(let path_require of paths_require){
+    if(typeof path_require === 'string'){
+      let path_resolved = require_del_chiamante.resolve(path_require);
+      let module_in_cache = require_del_chiamante.cache[path_resolved];
+      delete require_del_chiamante.cache[path_resolved];
+ 
+      cache_saved[path_resolved] = module_in_cache;
+    }
+    
+    
+    if(path_require === undefined){
+     ////throw new Error('da sviluppare'); //// al momento non fa nulla
+      ////cache = estraiAndRitornaKeysCacheTranneMain(require_del_chiamante); 
+    }
+
   }
-  if(path_require === undefined){
-    ////ripopolaCache(require_del_chiamante, cache); ///per adesso sembra non funzionare.
-  }
+  return previous_env.modules = cache_saved;
+}
+function eseguiCallback(callback){
+  assert(typeof callback === 'function');
+  return callback();
+}
+function restoreEnvironmentVar(previous_env){
+  assert(typeof previous_env.env === 'string');
+  process.env.NODE_ENV = previous_env.env;
+}
+function restoreCache(previous_env, require_del_chiamante){
+  assert(typeof previous_env === 'object');
+  assert('modules' in previous_env);
+  assert(typeof previous_env.modules === 'object');
+  
+  for(let path_mod in previous_env.modules)
+    require_del_chiamante.cache[path_mod] = previous_env.modules[path_mod];
+  
 }
 
+/// da usare quando risolvo problema cancellazione cache che non forza il ricalcolo del require
 function estraiAndRitornaKeysCacheTranneMain(require_obj){
   const da_rimanere = require_obj.main.filename;
   const eliminati = {};
@@ -60,5 +94,11 @@ function ripopolaCache(require_obj, cache){
   }
 }
 
-module.exports.ChangeEnv = importaRequireDalModuloChiamante;
+module.exports = injectRequireForChangeEnv;
+
+function injectRequireForChangeEnv(oggetto_require){
+  return function(...args){
+    return ChangeEnv(oggetto_require, ...args);
+  };
+}
 
