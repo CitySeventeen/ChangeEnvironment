@@ -1,4 +1,12 @@
 # ChangeEnvironment
+[![Test][test-pass-img]][test-pass-url]
+[![Commit Number][commit-number-img]][commit-number-url]
+
+[test-pass-img]: https://github.com/CitySeventeen/ChangeEnvironment/workflows/Node.js%20CI/badge.svg
+[test-pass-url]: https://github.com/CitySeventeen/ChangeEnvironment/actions/workflows/node.js.yml
+
+[commit-number-img]: https://img.shields.io/github/commit-activity/m/CitySeventeen/ChangeEnvironment
+[commit-number-url]: https://github.com/CitySeventeen/ChangeEnvironment/commits/main
  Permette di eseguire una callback, ad esempio una test suite, con una variabile di ambiente diversa, che ha effetto anche sui require di CommonJS. L'ambiente viene ripristinato dopo aver eseguito la callback come se non fosse mai stato modificato.
  
  ## Problema che vuole risolvere
