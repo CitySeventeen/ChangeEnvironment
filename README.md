@@ -9,7 +9,7 @@ ChangeEnvironment nasce per fornire una interfaccia semplice per il cambio di am
  
 ### Esempio di utilizzo
 ```js
-const ChangeEnv = require('change-env).ChangeEnv(require)
+const ChangeEnv = require('change-env)(require)
 const modulo_sotto_test = require('./modulo_sotto_test.js')
 ChangeEnv('test' /* o anche prod */, ()=>{
   it('In ambiente non di sviluppo il modulo sotto test fornisce solo due exports', ()=>{
