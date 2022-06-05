@@ -3,8 +3,9 @@
   "version": "0.2.2",
   "description": "Permette di eseguire una callback, ad esempio una test suite, con una variabile di ambiente diversa, che ha effetto anche sui require di CommonJS. L'ambiente viene ripristinato dopo aver eseguito la callback come se non fosse mai stato modificato.",
   "scripts": {
-    "test": "NODE_ENV=dev node ./node_modules/mocha/bin/mocha",
-    "windows test" : "SET NODE_ENV=dev& node ./node_modules/mocha/bin/mocha"
+    "test": "NODE_ENV=prod node ./node_modules/mocha/bin/mocha",
+    "windows test" : "SET NODE_ENV=dev& node ./node_modules/mocha/bin/mocha",
+    "dev test": "NODE_ENV=dev node ./node_modules/mocha/bin/mocha"
   },
   "bugs": {
     "url": "https://github.com/CitySeventeen/ChangeEnvironment/issues"
